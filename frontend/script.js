@@ -14,7 +14,9 @@ async function loadData() {
         <td>${p.GAJI}</td>
         <td>
           <button class="btn btn-sm btn-warning me-1"
-            onclick="editPegawai(${p.ID}, '${p.NAMA}', '${p.JABATAN}', ${p.GAJI})">
+            onclick="editPegawai(${p.ID}, '${p.NAMA}', '${p.JABATAN}', ${p.GAJI})"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
             <i class="fa fa-pencil"></i>
           </button>
           <button class="btn btn-sm btn-danger"
@@ -51,8 +53,11 @@ async function simpan() {
 
   clearForm();
   loadData();
-}
 
+  const modalEl = document.getElementById("exampleModal");
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  modal.hide();
+}
 async function deletePegawai(id) {
   if (!confirm("Yakin mau hapus data ini?")) return;
 
@@ -72,11 +77,12 @@ function clearForm() {
 }
 
 function editPegawai(id, namaVal, jabatanVal, gajiVal) {
-  idPegawai.value = id;
-  nama.value = namaVal;
-  jabatan.value = jabatanVal;
-  gaji.value = gajiVal;
+  document.getElementById("idPegawai").value = id;
+  document.getElementById("nama").value = namaVal;
+  document.getElementById("jabatan").value = jabatanVal;
+  document.getElementById("gaji").value = gajiVal;
 
+  document.getElementById("modalTitle").innerText = "Edit Pegawai";
   document.getElementById("btnSimpan").innerText = "Update";
 }
 
