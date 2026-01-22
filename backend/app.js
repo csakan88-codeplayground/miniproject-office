@@ -1,72 +1,89 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { getConnection } = require("./db");
+const db = require("./db");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get("/pegawai", async (req, res) => {
-  const conn = await getConnection();
-  const result = await conn.execute(
-    "SELECT id, nama, jabatan, gaji FROM pegawai ORDER BY id",
-    [],
-    { outFormat: 4002 }
-  );
-  await conn.close();
-  res.json(result.rows);
+  try {
+    const result = await db.query(
+      "SELECT id, nama, jabatan, gaji FROM pegawai ORDER BY id",
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.post("/pegawai", async (req, res) => {
-  const { nama, jabatan, gaji } = req.body;
-  const conn = await getConnection();
+  try {
+    const { nama, jabatan, gaji } = req.body;
 
-  await conn.execute(
-    `INSERT INTO pegawai (nama, jabatan, gaji)
-     VALUES (:nama, :jabatan, :gaji)`,
-    { nama, jabatan, gaji },
-    { autoCommit: true }
-  );
+    await db.query(
+      `INSERT INTO pegawai (nama, jabatan, gaji)
+       VALUES ($1, $2, $3)`,
+      [nama, jabatan, gaji]
+    );
 
-  await conn.close();
-  res.json({ message: "OK" });
+    res.json({ message: "OK" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.delete("/pegawai/:id", async (req, res) => {
+  try{
   const id = req.params.id;
-  const conn = await getConnection();
 
-  await conn.execute(
-    "DELETE FROM pegawai WHERE id = :id",
-    { id },
-    { autoCommit: true }
+  await db.query(
+    "DELETE FROM pegawai WHERE id = $1",
+    [id]
   );
-
-  await conn.close();
   res.json({ message: "deleted" });
+  }catch(err){
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.put("/pegawai/:id", async (req, res) => {
+  try{
   const { id } = req.params;
   const { nama, jabatan, gaji } = req.body;
 
-  const conn = await getConnection();
-
-  await conn.execute(
+  await db.query(
     `UPDATE pegawai
-     SET nama = :nama,
-         jabatan = :jabatan,
-         gaji = :gaji
-     WHERE id = :id`,
-    { id, nama, jabatan, gaji },
-    { autoCommit: true }
+     SET nama = $2,
+         jabatan = $3,
+         gaji = $4
+     WHERE id = $1`,
+    [ id, nama, jabatan, gaji ]
   );
-
-  await conn.close();
   res.json({ message: "updated" });
+  }catch(err){
+    res.status(500).json({ error: err.message });
+  }  
 });
 
-app.listen(3000, () =>
-  console.log("API jalan di http://localhost:3000")
-);
+app.get("/pegawai/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      "SELECT * FROM pegawai WHERE id = $1",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Data tidak ditemukan" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.listen(3000, () => console.log("API jalan di http://localhost:3000"));
