@@ -8,13 +8,13 @@ async function loadData() {
   data.forEach((p) => {
     tbody.innerHTML += `
       <tr>
-        <td style="display:none">${p.ID}</td>
-        <td>${p.NAMA}</td>
-        <td>${p.JABATAN}</td>
-        <td>${p.GAJI}</td>
+        <td style="display:none">${p.id}</td>
+        <td>${p.nama}</td>
+        <td>${p.jabatan}</td>
+        <td>${p.gaji}</td>
         <td>
           <button class="btn btn-sm btn-warning me-1"
-            onclick="editPegawai(${p.ID}, '${p.NAMA}', '${p.JABATAN}', ${p.GAJI})"
+            onclick="editPegawai(${p.id}, '${p.nama}', '${p.jabatan}', ${p.gaji})"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal">
             <i class="fa fa-pencil"></i>
@@ -87,3 +87,7 @@ function editPegawai(id, namaVal, jabatanVal, gajiVal) {
 }
 
 loadData();
+
+function logout() {
+  window.location.href = 'index.html';
+}
