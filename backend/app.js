@@ -89,4 +89,17 @@ app.get("/pegawai/:id", async (req, res) => {
   }
 });
 
+app.get("/jumlahpegawai", async (req, res) => {
+  try {
+    const result = await db.query(
+      "SELECT COUNT(*) AS total_pegawai, COALESCE(SUM(gaji), 0) AS total_gaji FROM pegawai",
+    );
+    res.json({ totalPegawai: result.rows[0].total_pegawai,
+      totalGaji: result.rows[0].total_gaji
+     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(3000, () => console.log("API jalan di http://localhost:3000"));
