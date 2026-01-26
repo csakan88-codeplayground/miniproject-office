@@ -1,6 +1,6 @@
-const user = JSON.parse(localStorage.getItem('user'));
+window.user = JSON.parse(localStorage.getItem('user'));
 
-if (!user) {
+if (!window.user) {
   window.location.href = 'index.html';
 } else {
   const roleMap = {

@@ -1,9 +1,7 @@
-// const user = JSON.parse(localStorage.getItem('user'));
-
-// if (user.role !== 'admin') {
-//   alert('Akses ditolak');
-//   window.location.href = 'index.html';
-// }
+if (window.user.role !== 'admin') {
+  alert('Akses ditolak');
+  window.history.back();
+}
 async function loadData() {
   const res = await fetch("http://localhost:3000/jumlahpegawai");
   const data = await res.json()

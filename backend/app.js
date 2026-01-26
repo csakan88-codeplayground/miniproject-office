@@ -12,7 +12,7 @@ app.use('/api/auth', authRoutes);
 app.get("/pegawai", async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id, nama, jabatan, gaji FROM pegawai ORDER BY id",
+      "SELECT id, nama, jabatan, gaji, divisi FROM pegawai ORDER BY id",
     );
     res.json(result.rows);
   } catch (err) {
@@ -22,12 +22,12 @@ app.get("/pegawai", async (req, res) => {
 
 app.post("/pegawai", async (req, res) => {
   try {
-    const { nama, jabatan, gaji } = req.body;
+    const { nama, jabatan, gaji, divisi } = req.body;
 
     await db.query(
-      `INSERT INTO pegawai (nama, jabatan, gaji)
+      `INSERT INTO pegawai (nama, jabatan, gaji, divisi)
        VALUES ($1, $2, $3)`,
-      [nama, jabatan, gaji]
+      [nama, jabatan, gaji, divisi]
     );
 
     res.json({ message: "OK" });
@@ -54,13 +54,14 @@ app.delete("/pegawai/:id", async (req, res) => {
 app.put("/pegawai/:id", async (req, res) => {
   try{
   const { id } = req.params;
-  const { nama, jabatan, gaji } = req.body;
+  const { nama, jabatan, gaji,divisi } = req.body;
 
   await db.query(
     `UPDATE pegawai
      SET nama = $2,
          jabatan = $3,
          gaji = $4
+         divisi = $5
      WHERE id = $1`,
     [ id, nama, jabatan, gaji ]
   );

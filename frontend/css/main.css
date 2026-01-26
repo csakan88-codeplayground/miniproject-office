@@ -18,3 +18,51 @@ body {
 .card {
   border-radius: 10px;
 }
+.dropdown-hover > .nav-link {
+  cursor: default;
+}
+/* Hover dropdown */
+/* Parent yang jadi hover trigger */
+.dropdown-hover {
+  position: relative;
+}
+
+/* Dropdown default hidden */
+.dropdown-hover .dropdown-menu {
+  display: none;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+}
+
+/* Aktif kalau parent DI-HOVER */
+.dropdown-hover:hover .dropdown-menu {
+  display: block;
+}
+
+/* BUFFER AREA anti putus hover */
+.dropdown-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  top: 100%;
+}
+
+/* Smooth feel */
+.dropdown-hover .dropdown-menu {
+  animation: dropdownFade 0.18s ease;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

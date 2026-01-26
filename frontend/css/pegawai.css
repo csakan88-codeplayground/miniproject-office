@@ -1,0 +1,43 @@
+
+/* Label & info */
+.dataTables_filter label,
+.dataTables_info {
+  color: #dee2e6;
+  font-weight: 500;
+}
+
+/* Search input */
+.dataTables_filter input {
+  background-color: #212529;
+  color: #fff;
+  border: 1px solid #495057;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.dataTables_filter input::placeholder {
+  color: #adb5bd;
+}
+
+/* Pagination */
+.dataTables_paginate .page-link {
+  background-color: #212529;
+  color: #dee2e6;
+  border: 1px solid #495057;
+}
+
+.dataTables_paginate .page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+.dataTables_paginate .page-item.disabled .page-link {
+  background-color: #212529;
+  color: #6c757d;
+}
+
+/* Remove weird spacing */
+.dataTables_wrapper .dataTables_filter {
+  margin-bottom: 10px;
+}
